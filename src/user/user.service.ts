@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
+import { resolveObjectURL } from 'buffer';
 
 @Injectable()
 export class UserService {
-  getHello(): string {
+  async canLogin() {
     return 'Hello Worls!';
   }
 }
