@@ -12,16 +12,16 @@ export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   userId: string; // 학번 혹은 관리자번호
 
-  @Column()
+  @Column({ type: 'char' })
   type: string;
 
-  @Column({})
+  @Column({ type: 'char', nullable: true })
   year: string; // 학년
 
-  @Column({})
+  @Column({ type: 'char', nullable: true })
   name: string; // 이름
 
-  @Column({})
+  @Column({ type: 'char', nullable: true })
   email: string; // 이메일
 
   @OneToMany(() => Course, (course) => course.courseId)
