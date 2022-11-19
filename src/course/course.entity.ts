@@ -1,7 +1,14 @@
-import { Column, Entity, PrimaryGeneratedColumn, BaseEntity } from 'typeorm';
+import { User } from 'src/User/user.entity';
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  BaseEntity,
+  OneToMany,
+} from 'typeorm';
 
 @Entity()
-export class Board extends BaseEntity {
+export class Course extends BaseEntity {
   @PrimaryGeneratedColumn()
   courseId: string;
 
@@ -23,13 +30,6 @@ export class Board extends BaseEntity {
   @Column()
   maxPeople: number; // 총원
 
-  @Column()
-  studentIds: string[]; // 현재 신청 인원의 학번들
-}
-
-export interface Course {
-  major: string; // 학과
-  name: string; // 과목 이름
-  maxPeople: number; // 총원
+  @OneToMany(() => User, (user) => user.userId)
   studentIds: string[]; // 현재 신청 인원의 학번들
 }
