@@ -49,7 +49,6 @@ export class CourseService {
     });
     return result;
   }
-
   // 필터링 하여 강의 목록 반환
   async filter(label: string, value: string) {
     if (value === '') {
