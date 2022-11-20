@@ -5,11 +5,12 @@ import {
   PrimaryGeneratedColumn,
   BaseEntity,
   OneToMany,
+  PrimaryColumn,
 } from 'typeorm';
 
 @Entity()
 export class Course extends BaseEntity {
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn('uuid')
   courseId: string;
 
   @Column()
