@@ -7,6 +7,9 @@ import {
   BaseEntity,
   OneToMany,
   PrimaryGeneratedColumn,
+  ManyToMany,
+  JoinColumn,
+  JoinTable,
 } from 'typeorm';
 
 @Entity({ schema: 'DoNotRoughly', name: 'User' })
@@ -29,6 +32,7 @@ export class User extends BaseEntity {
   @Column({ type: 'varchar', nullable: true })
   email: string; // 이메일
 
-  @OneToMany(() => Course, (course) => course.courseId)
-  applicated?: Course[]; // 신청한 과목 번호 리스트
+  @ManyToMany(() => Course, (course) => course.courseId)
+  @JoinTable()
+  course?: Course[]; // 신청한 과목 번호 리스트
 }

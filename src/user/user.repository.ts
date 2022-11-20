@@ -10,4 +10,11 @@ export class UserRepository extends Repository<User> {
       .where('user.userId = :id', { id })
       .getOne();
   }
+
+  public async findCourseListByUser(id: string) {
+    return await this.find({
+      relations: ['course'],
+      where: { userId: id },
+    });
+  }
 }
