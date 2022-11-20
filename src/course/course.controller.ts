@@ -1,12 +1,32 @@
-import { Controller, Get } from '@nestjs/common';
-import { UserService } from './course.service';
+import { Controller, Get, Param, Patch, Post, Req, Res } from '@nestjs/common';
+import { Request, Response } from 'express';
+import { Course } from './course.entity';
+import { CourseReturn } from './course.returns';
+import { CourseService } from './course.service';
 
-@Controller()
-export class UserController {
-  constructor(private readonly userService: UserService) {}
+@Controller('course')
+export class CourseController {
+  constructor(private readonly courseService: CourseService) {}
 
-  @Get()
-  getHello(): string {
-    return this.userService.getHello();
+  @Get('filter')
+  async filter(@Req() req: Request, @Res() res: Response) {
+    console.log(`CALL : /course/filter`);
+    const label: string = req.query.label.toString();
+    const value: string = req.query.value.toString();
+    const result = await this.courseService.filter(label, value);
+    if (result === null) {
+      return res.status(403);
+    }
+    return res.status(201).json(CourseService.returnCourseList(result));
+  }
+
+  @Patch('modify')
+  async modify(@Req() req: Request, @Res() res: Response) {
+    const data: CourseReturn = JSON.parse(Object(req.body.params.data));
+    const result = await this.courseService.modify(data);
+    if (result === null) {
+      return res.status(403);
+    }
+    return res.status(201).json(CourseService.returnCourseList(result));
   }
 }

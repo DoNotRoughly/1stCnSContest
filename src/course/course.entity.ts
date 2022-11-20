@@ -1,15 +1,8 @@
-import { User } from 'src/User/user.entity';
-import {
-  Column,
-  Entity,
-  PrimaryGeneratedColumn,
-  BaseEntity,
-  OneToMany,
-} from 'typeorm';
+import { Column, Entity, BaseEntity, PrimaryColumn } from 'typeorm';
 
-@Entity()
+@Entity({ schema: 'DoNotRoughly', name: 'Course' })
 export class Course extends BaseEntity {
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn('uuid')
   courseId: string;
 
   @Column()
@@ -30,6 +23,6 @@ export class Course extends BaseEntity {
   @Column()
   maxPeople: number; // 총원
 
-  @OneToMany(() => User, (user) => user.userId)
-  studentIds: string[]; // 현재 신청 인원의 학번들
+  @Column()
+  studentIds: string; // 현재 신청 인원의 학번들, 리스트를 stringfy 해서 저장
 }
