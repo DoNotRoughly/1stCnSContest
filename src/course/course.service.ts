@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/User/user.entity';
 import { Course } from './course.entity';
 import { CourseRepository } from './course.repository';
 import { CourseReturn } from './course.returns';
@@ -27,7 +28,7 @@ export class CourseService {
       year: course.year,
       professor: course.professor,
       maxPeople: course.maxPeople,
-      currentPeople: JSON.parse(course.studentIds).length,
+      currentPeople: 0, //JSON.parse(course.studentIds).length,
     };
   }
 
@@ -38,22 +39,20 @@ export class CourseService {
   }
 
   async getCourseById(courseId: string) {
-    return this.courseRepository.findOneBy({ courseId: courseId });
+    // course id로 강좌 찾기.
+    return await this.courseRepository.findOneBy({ courseId: courseId });
   }
 
-  async getCourseListByIds(courseIds: string[]) {
-    const result: Course[] = [];
-    courseIds.map(async (courseId) => {
-      result.push(await this.getCourseById(courseId));
+  public async getCourseListId(courseList: Course[]) {
+    const result = courseList.map(async (course) => {
+      await this.getCourseById(course.courseId);
     });
     return result;
   }
-
-  // 필터링 하기
-  async filter(label: string, value: string): Promise<Course[]> {
-    // 문자열 부분만 들어와도 검색되게 해야함.
+  // 필터링 하여 강의 목록 반환
+  async filter(label: string, value: string) {
     if (value === '') {
-      return this.courseRepository.find({
+      return await this.courseRepository.find({
         where: {},
       });
     }
