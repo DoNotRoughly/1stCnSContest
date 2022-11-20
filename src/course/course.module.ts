@@ -1,12 +1,13 @@
 import { Module } from '@nestjs/common';
-import { UserController } from './course.controller';
-import { UserService } from './course.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { CourseController } from './course.controller';
+import { CourseService } from './course.service';
 import { Course } from './course.entity';
+import { CourseRepository } from './course.repository';
+import { TypeOrmExModule } from 'src/typeorm/typeorm-custom-repository.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Course])],
-  controllers: [UserController],
-  providers: [UserService],
+  imports: [TypeOrmExModule.forCustomRepository([Course, CourseRepository])],
+  controllers: [CourseController],
+  providers: [CourseService],
 })
 export class CourseModule {}

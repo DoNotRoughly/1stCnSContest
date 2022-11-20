@@ -11,7 +11,7 @@ import {
 
 @Entity({ schema: 'DoNotRoughly', name: 'User' })
 export class User extends BaseEntity {
-  @PrimaryColumn()
+  @PrimaryColumn('uuid')
   userId: string; // 학번 혹은 관리자번호
 
   @Column({ type: 'varchar' })
