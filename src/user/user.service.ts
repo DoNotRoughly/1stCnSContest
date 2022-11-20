@@ -29,15 +29,37 @@ export class UserService {
     }
   }
 
+  async cancelCourse(userId: string, courseId: string) {
+    // 수강 취소입니다.
+    try {
+      const userarr = await this.userRepository.findCourseListByUser(userId);
+      const user = userarr[0];
+      if (!user) return { status: 403, message: 'user 정보가 틀렸습니다.' };
+      else {
+        const tempCourseList = user.course.filter((course) => {
+          return course.courseId !== courseId;
+        });
+        if (tempCourseList.length === user.course.length)
+          return { status: 400, message: '삭제되지 않았습니다.' };
+        else {
+          user.course = tempCourseList;
+          await this.dataSource.manager.save(user);
+          return { ...user, status: 202 };
+        }
+      }
+    } catch (err) {
+      return { status: 500 };
+    }
+  }
+
   async applyCourse(userId: string, courseId: string) {
     // 수강 신청입니다.
     try {
       const userarr = await this.userRepository.findCourseListByUser(userId);
-      if (!userarr[0])
-        return { status: 400, message: 'user 정보가 틀렸습니다.' };
+      const user = userarr[0];
+      if (!user) return { status: 403, message: 'user 정보가 틀렸습니다.' };
       else {
         const newCourse = await this.courseService.getCourseById(courseId);
-        const user = userarr[0];
         let count = newCourse.point;
         // 강의 수강 조건에 맞지 않는 경우
         if (user.year < newCourse.year)
@@ -49,7 +71,7 @@ export class UserService {
             return course.courseId === courseId;
           }).length
         )
-          return { status: 403, message: '이미 신청한 과목입니다.' };
+          return { status: 400, message: '이미 신청한 과목입니다.' };
         // 수강 학점이 9학점이 넘는 경우
         if (count > 9)
           return { status: 400, message: '이수 가능 학점을 초과했습니다.' };
