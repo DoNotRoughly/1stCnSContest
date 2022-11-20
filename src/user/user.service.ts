@@ -33,23 +33,28 @@ export class UserService {
     // 수강 신청입니다.
     try {
       const userarr = await this.userRepository.findCourseListByUser(userId);
-      if (!userarr[0]) return { status: 400 };
+      if (!userarr[0])
+        return { status: 400, message: 'user 정보가 틀렸습니다.' };
       else {
         const newCourse = await this.courseService.getCourseById(courseId);
         const user = userarr[0];
         let count = newCourse.point;
+        // 강의 수강 조건에 맞지 않는 경우
+        if (user.year < newCourse.year)
+          return { status: 400, message: '수강할 수 없는 학년입니다.' };
+        // 수강 목록에 이미 있는 경우
         if (
-          // 수강 가능한지 확인하는 조건문
-          // 수강 목록에 있거나
           user.course.filter((course) => {
             count += course.point;
             return course.courseId === courseId;
-          }).length >= 1 ||
-          // 수강 학점이 9학점이 넘거나
-          count > 9
+          }).length
         )
-          return { status: 400 };
-        // 목록에 없다면 course 목록에 추가해준따.
+          return { status: 403, message: '이미 신청한 과목입니다.' };
+        // 수강 학점이 9학점이 넘는 경우
+        if (count > 9)
+          return { status: 400, message: '이수 가능 학점을 초과했습니다.' };
+
+        // 모든 조건을 통과한다면 course 목록에 추가해준따.
         user.course.push(newCourse);
         await this.dataSource.manager.save(user);
         // TODO:: courseid로 강좌 가져와서 유저 데이터에 합쳐서 객체 배열로 전달
