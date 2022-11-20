@@ -10,6 +10,12 @@ export class CourseService {
   ) {}
 
   async filter(label: string, value: string) {
+    if (value === '') {
+      return this.courseRepository.find({
+        where: {},
+      });
+    }
+
     if (label === 'major') {
       return this.courseRepository.findBy({
         major: value,
@@ -31,7 +37,7 @@ export class CourseService {
         courseId: value,
       });
     } else {
-      return null;
+      return '장난?';
     }
 
     // return 3;

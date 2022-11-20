@@ -11,5 +11,5 @@ export const typeORMConfig: TypeOrmModuleOptions = {
   password: '1234',
   database: 'DoNotRoughly',
   entities: [User, Course],
-  synchronize: true,
+  synchronize: false,
 };
