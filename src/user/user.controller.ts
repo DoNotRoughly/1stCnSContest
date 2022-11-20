@@ -22,6 +22,7 @@ export class UserController {
   @Patch('apply')
   async apply(@Req() req: Request, @Res() res: Response) {
     // 수강신청 api
+    console.log(req.body);
     const result = await this.userService.applyCourse(
       req.body.params.userId,
       req.body.params.course,
