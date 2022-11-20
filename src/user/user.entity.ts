@@ -2,26 +2,30 @@ import { Course } from 'src/course/course.entity';
 import {
   Column,
   Entity,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
   BaseEntity,
   OneToMany,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 @Entity({ schema: 'DoNotRoughly', name: 'User' })
 export class User extends BaseEntity {
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn()
   userId: string; // 학번 혹은 관리자번호
 
-  @Column({ type: 'char' })
-  type: string;
+  @Column({ type: 'varchar' })
+  pw: string; // 비밀번호
+
+  @Column({ type: 'varchar' })
+  type: string; // 관리자/학생
 
   @Column({ type: 'char', nullable: true })
   year: string; // 학년
 
-  @Column({ type: 'char', nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   name: string; // 이름
 
-  @Column({ type: 'char', nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   email: string; // 이메일
 
   @OneToMany(() => Course, (course) => course.courseId)
