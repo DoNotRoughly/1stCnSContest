@@ -11,9 +11,10 @@ export class UserController {
   @Post('login')
   async login(@Req() req: Request, @Res() res: Response) {
     // 로그인 api
+    console.log(req.body.params);
     const result = await this.userService.loginInfo(
-      req.body.userId,
-      req.body.pw,
+      req.body.params.userId,
+      req.body.params.pw,
     );
     return res.status(result.status).json(result);
   }
@@ -22,8 +23,8 @@ export class UserController {
   async apply(@Req() req: Request, @Res() res: Response) {
     // 수강신청 api
     const result = await this.userService.applyCourse(
-      req.body.userId,
-      req.body.courseId,
+      req.body.params.userId,
+      req.body.params.courseId,
     );
     return res.status(result.status).json(result);
   }
