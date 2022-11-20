@@ -13,7 +13,7 @@ export class User extends BaseEntity {
   userId: string; // 학번 혹은 관리자번호
 
   @Column({ type: 'char' })
-  type: string;
+  type: string; // 관리자 여부
 
   @Column({ type: 'char', nullable: true })
   year: string; // 학년
