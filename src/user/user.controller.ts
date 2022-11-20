@@ -1,4 +1,4 @@
-import { Controller, Get, Patch, Post, Req, Res } from '@nestjs/common';
+import { Controller, Delete, Get, Patch, Post, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { identity } from 'rxjs';
 import { UserService } from './user.service';
@@ -21,6 +21,17 @@ export class UserController {
 
   @Patch('apply')
   async apply(@Req() req: Request, @Res() res: Response) {
+    // 수강신청 api
+    const result = await this.userService.applyCourse(
+      req.body.params.userId,
+      req.body.params.course,
+    );
+    return res.status(result.status).json(result);
+  }
+
+  // 살려주세요 암 걸릴거 같아요
+  @Patch('cancel')
+  async cancel(@Req() req: Request, @Res() res: Response) {
     // 수강신청 api
     const result = await this.userService.applyCourse(
       req.body.params.userId,
