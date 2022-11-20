@@ -1,6 +1,7 @@
 import { Controller, Get, Param, Patch, Post, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { Course } from './course.entity';
+import { CourseReturn } from './course.returns';
 import { CourseService } from './course.service';
 
 @Controller('course')
@@ -21,7 +22,7 @@ export class CourseController {
 
   @Patch('modify')
   async modify(@Req() req: Request, @Res() res: Response) {
-    const data: Course = JSON.parse(req.query.data.toString());
+    const data: CourseReturn = JSON.parse(Object(req.body.params.data));
     const result = await this.courseService.modify(data);
     if (result === null) {
       return res.status(403);

@@ -34,7 +34,6 @@ export class CourseService {
   static returnCourseList(courses: Course[]): CourseReturn[] {
     const result: CourseReturn[] = [];
     courses.map((course) => result.push(CourseService.returnCourse(course)));
-    console.log(result);
     return result;
   }
 
@@ -52,6 +51,7 @@ export class CourseService {
 
   // 필터링 하기
   async filter(label: string, value: string): Promise<Course[]> {
+    // 문자열 부분만 들어와도 검색되게 해야함.
     if (value === '') {
       return this.courseRepository.find({
         where: {},
@@ -86,11 +86,25 @@ export class CourseService {
   }
 
   // 과목 정보 수정
-  async modify(data: Course): Promise<Course[]> {
+  async modify(data: CourseReturn): Promise<Course[]> {
     if (data.professor === '') return null;
     if (data.name === '') return null;
+    if (data.maxPeople === 0) return null;
 
-    this.courseRepository.update({ courseId: data.courseId }, data);
+    const tmp = await this.courseRepository.findOneBy({
+      courseId: data.courseId,
+    });
+
+    await this.courseRepository.update(
+      { courseId: data.courseId },
+      {
+        ...tmp,
+        professor: data.professor,
+        name: data.name,
+        maxPeople: data.maxPeople,
+      },
+    );
+
     return await this.filter(this.resentlabel, this.resentvalue);
   }
 }
