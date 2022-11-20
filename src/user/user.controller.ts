@@ -24,7 +24,7 @@ export class UserController {
     // 수강신청 api
     const result = await this.userService.applyCourse(
       req.body.params.userId,
-      req.body.params.courseId,
+      req.body.params.course
     );
     return res.status(result.status).json(result);
   }
