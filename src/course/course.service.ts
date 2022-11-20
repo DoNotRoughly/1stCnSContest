@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Course } from './course.entity';
 import { CourseRepository } from './course.repository';
+import { CourseReturn } from './course.returns';
 
 @Injectable()
 export class CourseService {
@@ -17,6 +18,26 @@ export class CourseService {
     this.resentvalue = '';
   }
 
+  static returnCourse(course: Course): CourseReturn {
+    return {
+      courseId: course.courseId,
+      name: course.name,
+      point: course.point,
+      major: course.major,
+      year: course.year,
+      professor: course.professor,
+      maxPeople: course.maxPeople,
+      currentPeople: JSON.parse(course.studentIds).length,
+    };
+  }
+
+  static returnCourseList(courses: Course[]): CourseReturn[] {
+    const result: CourseReturn[] = [];
+    courses.map((course) => result.push(CourseService.returnCourse(course)));
+    console.log(result);
+    return result;
+  }
+
   async getCourseById(courseId: string) {
     return this.courseRepository.findOneBy({ courseId: courseId });
   }
@@ -26,10 +47,11 @@ export class CourseService {
     courseIds.map(async (courseId) => {
       result.push(await this.getCourseById(courseId));
     });
+    return result;
   }
 
   // 필터링 하기
-  async filter(label: string, value: string) {
+  async filter(label: string, value: string): Promise<Course[]> {
     if (value === '') {
       return this.courseRepository.find({
         where: {},
@@ -57,14 +79,14 @@ export class CourseService {
         courseId: value,
       });
     } else {
-      return '장난?';
+      return null;
     }
 
     return this.resentFiltered;
   }
 
   // 과목 정보 수정
-  async modify(data: Course) {
+  async modify(data: Course): Promise<Course[]> {
     if (data.professor === '') return null;
     if (data.name === '') return null;
 
