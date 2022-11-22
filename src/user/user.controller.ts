@@ -33,7 +33,7 @@ export class UserController {
   @Patch('cancel')
   async cancer(@Req() req: Request, @Res() res: Response) {
     // 수강신청 api
-    const result = await this.userService.applyCourse(
+    const result = await this.userService.cancelCourse(
       req.body.params.userId,
       req.body.params.courseId,
     );
