@@ -1,6 +1,5 @@
-import { Controller, Delete, Get, Patch, Post, Req, Res } from '@nestjs/common';
+import { Controller, Patch, Post, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { identity } from 'rxjs';
 import { UserService } from './user.service';
 
 @Controller('user')
@@ -22,6 +21,7 @@ export class UserController {
   @Patch('apply')
   async apply(@Req() req: Request, @Res() res: Response) {
     // 수강신청 api
+    console.log(req.body);
     const result = await this.userService.applyCourse(
       req.body.params.userId,
       req.body.params.course,
