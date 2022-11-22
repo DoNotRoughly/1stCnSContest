@@ -9,14 +9,16 @@ export class CourseController {
 
   @Get('filter')
   async filter(@Req() req: Request, @Res() res: Response) {
+    // 필터링하여 강의를 가져오는 함수
     console.log(`CALL : /course/filter`);
     const label: string = req.query.label.toString();
     const value: string = req.query.value.toString();
-    const result = await this.courseService.filter(label, value);
+    const courses = await this.courseService.filter(label, value);
+    const result = await this.courseService.returnCourseList(courses);
     if (result === null) {
       return res.status(403);
     }
-    return res.status(201).json(CourseService.returnCourseList(result));
+    return res.status(201).json(result);
   }
 
   @Patch('modify')
@@ -26,6 +28,6 @@ export class CourseController {
     if (result === null) {
       return res.status(403);
     }
-    return res.status(201).json(CourseService.returnCourseList(result));
+    return res.status(201).json(this.courseService.returnCourseList(result));
   }
 }

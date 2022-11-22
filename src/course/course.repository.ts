@@ -5,9 +5,10 @@ import { Course } from './course.entity';
 @CustomRepository(Course)
 export class CourseRepository extends Repository<Course> {
   public async findUserListByCourse(id: string) {
-    return await this.find({
+    const result = await this.find({
       relations: ['user'],
       where: { courseId: id },
     });
+    return result;
   }
 }
