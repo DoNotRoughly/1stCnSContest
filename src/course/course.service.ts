@@ -57,7 +57,7 @@ export class CourseService {
       if (alreadyIn) {
         return { status: 400, message: '이미 등록되어 있는 강의입니다.' };
       }
-      // await this.courseRepository.save(course);
+      await this.courseRepository.save(course);
       const result = await this.returnCourseList(await this.filter('', ''));
       console.log(course);
       return { status: 201, result };
@@ -91,7 +91,8 @@ export class CourseService {
     // 삭제
     try {
       const course = await this.courseRepository.findUserListByCourse(courseId);
-      await this.sendEmail(course[0].user);
+      // await this.sendEmail(course[0].user);
+
       const isDeleted = await this.courseRepository.delete(courseId);
       if (!isDeleted.affected) {
         return { status: 400, message: '삭제할 수 없는 강의입니다.' };
