@@ -22,7 +22,13 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
+<<<<<<< HEAD
+
 # DoNotRoughly v1.0.0
+
+=======
+
+> > > > > > > f752655 (:memo: readme 파일 수정해씀미다 (#13))
 
 ## Installation
 
