@@ -1,6 +1,5 @@
-import { Controller, Delete, Get, Patch, Post, Req, Res } from '@nestjs/common';
+import { Controller, Patch, Post, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { identity } from 'rxjs';
 import { UserService } from './user.service';
 
 @Controller('user')

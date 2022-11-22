@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Patch, Post, Req, Res } from '@nestjs/common';
+import { Controller, Get, Patch, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { PeriodService } from './period.service';
 import { ApplyPeriod } from './period.types';

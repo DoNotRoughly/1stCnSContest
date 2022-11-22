@@ -1,13 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Course } from 'src/course/course.entity';
 import { CourseService } from 'src/course/course.service';
+import { PeriodService } from 'src/period/period.service';
+import { ApplyPeriod } from 'src/period/period.types';
 import { DataSource } from 'typeorm';
-import { User } from './user.entity';
 import { UserRepository } from './user.repository';
-
-const startTime = null;
-const finishTime = null;
 
 @Injectable()
 export class UserService {
@@ -16,6 +13,7 @@ export class UserService {
     private userRepository: UserRepository,
     private courseService: CourseService,
     private dataSource: DataSource,
+    private periodService: PeriodService,
   ) {}
   async loginInfo(userId: string, pw: string) {
     // 로그인입니다.
@@ -55,6 +53,9 @@ export class UserService {
   async applyCourse(userId: string, courseId: string) {
     // 수강 신청입니다.
     try {
+      const app_period: ApplyPeriod = this.periodService.getPeriod();
+      const now_date: Date = new Date();
+      console.log(app_period, now_date);
       const userarr = await this.userRepository.findCourseListByUser(userId);
       const user = userarr[0];
       if (!user) return { status: 403, message: 'user 정보가 틀렸습니다.' };
@@ -75,7 +76,10 @@ export class UserService {
         // 수강 학점이 9학점이 넘는 경우
         if (count > 9)
           return { status: 400, message: '이수 가능 학점을 초과했습니다.' };
-
+        // 신청 가능 시간인지 확인해주는 경우
+        if (app_period.start > now_date || app_period.end < now_date) {
+          return { status: 400, message: '신청 가능 기간이 아닙니다.' };
+        }
         // 모든 조건을 통과한다면 course 목록에 추가해준따.
         user.course.push(newCourse);
         await this.dataSource.manager.save(user);
