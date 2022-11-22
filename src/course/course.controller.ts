@@ -33,5 +33,7 @@ export class CourseController {
   }
 
   @Delete('')
-  async deleteCourse(@Req() req: Request, @Res() res: Response) {}
+  async deleteCourse(@Req() req: Request, @Res() res: Response) {
+    return;
+  }
 }

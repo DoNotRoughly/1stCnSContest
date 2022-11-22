@@ -43,6 +43,92 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
+# Here Is Our API
+
+- ### Base_URL: http://52.78.130.222/api
+
+## CASE: /user
+
+#### @Post(/login)
+
+```Json
+input:
+{
+  "userId":string,
+  "pw":string
+}
+output: User
+```
+
+#### @Patch(/apply)
+
+```Json
+input:
+{
+  "userId":string,
+  "courseId":string
+}
+output: User
+```
+
+#### @Delete(/cancel)
+
+```Json
+input:
+{
+  "userId":string,
+  "courseId":string
+}
+output: User
+```
+
+<br/>
+
+## CASE: /course
+
+#### @Get(/filter)
+
+```Json
+input:
+{
+  "label":string,
+  "value":string
+}
+output: CourseReturn[]
+```
+
+#### @Patch(/modify)
+
+```Json
+input:
+{
+  "data":string,
+}
+output: CourseReturn[]
+```
+
+## CASE: /period
+
+#### @Get(/)
+
+```Json
+input: x
+output: period
+```
+
+#### @Patch(/)
+
+```Json
+input:
+{
+  "period":{
+    "start":Date,
+    "end":Date
+  }
+}
+output: period
+```
+
 ## Test
 
 ```bash
@@ -55,16 +141,6 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
 
 ## License
 
