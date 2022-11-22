@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { DataSource } from 'typeorm';
 import { Course } from './course.entity';
 import { CourseRepository } from './course.repository';
 import { CourseReturn } from './course.returns';
@@ -13,6 +14,7 @@ export class CourseService {
     //생성자
     @InjectRepository(CourseRepository)
     private readonly courseRepository: CourseRepository,
+    private dataSource: DataSource,
   ) {
     this.resentlabel = 'major';
     this.resentvalue = '';
@@ -46,6 +48,26 @@ export class CourseService {
   async getCourseById(courseId: string) {
     // course id로 강좌 찾기.
     return await this.courseRepository.findOneBy({ courseId: courseId });
+  }
+
+  async addCourse(course: Course) {
+    try {
+      const alreadyIn = await this.getCourseById(course.courseId);
+      if (alreadyIn) {
+        return { status: 400, message: '이미 등록되어 있는 강의입니다.' };
+      }
+      const result = await this.courseRepository.save(course);
+      console.log(course);
+      return { status: 201, result };
+    } catch (e) {
+      console.log(e);
+      return { status: 400, message: '오류가 발생했습니다.' };
+    }
+  }
+
+  async deleteCourse(courseId: string) {
+    const result = await this.courseRepository.delete(courseId);
+    return { status: 201, result };
   }
 
   // 필터링 하여 강의 목록 반환

@@ -3,7 +3,7 @@ import { Column, Entity, BaseEntity, PrimaryColumn, ManyToMany } from 'typeorm';
 
 @Entity()
 export class Course extends BaseEntity {
-  @PrimaryColumn('uuid')
+  @PrimaryColumn()
   courseId: string;
 
   @Column()
