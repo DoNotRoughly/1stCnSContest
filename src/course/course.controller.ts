@@ -22,10 +22,11 @@ export class CourseController {
   @Patch('modify')
   async modify(@Req() req: Request, @Res() res: Response) {
     const data: CourseReturn = JSON.parse(Object(req.body.params.data));
-    const result = await this.courseService.modify(data);
+    const courses = await this.courseService.modify(data);
+    const result = await this.courseService.returnCourseList(courses);
     if (result === null) {
       return res.status(403);
     }
-    return res.status(201).json(CourseService.returnCourseList(result));
+    return res.status(201).json(result);
   }
 }
