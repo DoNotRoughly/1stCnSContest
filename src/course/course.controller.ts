@@ -1,4 +1,4 @@
-import { Controller, Get, Patch, Req, Res } from '@nestjs/common';
+import { Controller, Delete, Get, Patch, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { CourseReturn } from './course.returns';
 import { CourseService } from './course.service';
@@ -31,4 +31,7 @@ export class CourseController {
     }
     return res.status(201).json(result);
   }
+
+  @Delete('')
+  async deleteCourse(@Req() req: Request, @Res() res: Response) {}
 }
