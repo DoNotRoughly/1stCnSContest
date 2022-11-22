@@ -6,7 +6,6 @@ import { CourseReturn } from './course.returns';
 
 @Injectable()
 export class CourseService {
-  resentFiltered: Course[];
   resentlabel: string;
   resentvalue: string;
 
@@ -56,32 +55,23 @@ export class CourseService {
         where: {},
       });
     }
-
+    let condition: object = {};
     if (label === 'major') {
-      this.resentFiltered = await this.courseRepository.findBy({
-        major: value,
-      });
+      condition = { major: value };
     } else if (label === 'year') {
-      this.resentFiltered = await this.courseRepository.findBy({
-        year: value,
-      });
+      condition = { year: value };
     } else if (label === 'professor') {
-      this.resentFiltered = await this.courseRepository.findBy({
-        professor: value,
-      });
+      condition = { professor: value };
     } else if (label === 'name') {
-      this.resentFiltered = await this.courseRepository.findBy({
-        name: value,
-      });
+      condition = { name: value };
     } else if (label === 'courseId') {
-      this.resentFiltered = await this.courseRepository.findBy({
-        courseId: value,
-      });
+      condition = { courseId: value };
     } else {
       return null;
     }
+    const result = await this.courseRepository.findBy(condition);
 
-    return this.resentFiltered;
+    return result;
   }
 
   // 과목 정보 수정
