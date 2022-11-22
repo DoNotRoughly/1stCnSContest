@@ -24,18 +24,18 @@ export class UserController {
     console.log(req.body);
     const result = await this.userService.applyCourse(
       req.body.params.userId,
-      req.body.params.course,
+      req.body.params.courseId,
     );
     return res.status(result.status).json(result);
   }
 
   // 살려주세요 암 걸릴거 같아요
   @Patch('cancel')
-  async cancel(@Req() req: Request, @Res() res: Response) {
+  async cancer(@Req() req: Request, @Res() res: Response) {
     // 수강신청 api
-    const result = await this.userService.applyCourse(
+    const result = await this.userService.cancelCourse(
       req.body.params.userId,
-      req.body.params.course,
+      req.body.params.courseId,
     );
     return res.status(result.status).json(result);
   }
