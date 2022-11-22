@@ -7,7 +7,7 @@ import { ApplyPeriod } from './period.types';
 export class PeriodController {
   constructor(private readonly periodService: PeriodService) {}
 
-  @Patch('set')
+  @Patch()
   async set(@Req() req: Request, @Res() res: Response) {
     const peroid: ApplyPeriod = JSON.parse(Object(req.body.params.period));
     const result = this.periodService.setPeriod(peroid);
@@ -17,7 +17,7 @@ export class PeriodController {
     return res.status(201).json(result);
   }
 
-  @Get('get')
+  @Get()
   async get(@Req() req: Request, @Res() res: Response) {
     const result = this.periodService.getPeriod();
     if (result === null) {
