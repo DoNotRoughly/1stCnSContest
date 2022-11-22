@@ -28,7 +28,7 @@ export class User extends BaseEntity {
   @Column({ type: 'varchar', nullable: true })
   email: string; // 이메일
 
-  @ManyToMany(() => Course, (course) => course.courseId)
+  @ManyToMany(() => Course, (course) => course.user)
   @JoinTable()
   course?: Course[]; // 신청한 과목 번호 리스트
 }
