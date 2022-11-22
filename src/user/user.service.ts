@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Course } from 'src/course/course.entity';
 import { CourseService } from 'src/course/course.service';
 import { PeriodService } from 'src/period/period.service';
 import { ApplyPeriod } from 'src/period/period.types';
 import { DataSource } from 'typeorm';
+import { User } from './user.entity';
 import { UserRepository } from './user.repository';
 
 @Injectable()
@@ -51,38 +53,66 @@ export class UserService {
     }
   }
 
+  // 수강신청 예외처리 함수
+  private conditionToApply(
+    course: Course,
+    user: User,
+    courseId: string,
+    count: number,
+    app_period: ApplyPeriod,
+  ) {
+    let total_point: number = course.point;
+    const now_date: Date = new Date();
+    // 강의 수강 조건에 맞지 않는 경우
+    if (user.year < course.year)
+      return { status: 400, message: '수강할 수 없는 학년입니다.' };
+    // 수강 목록에 이미 있는 경우
+    if (
+      user.course.filter((course) => {
+        total_point += course.point;
+        return course.courseId === courseId;
+      }).length
+    )
+      return { status: 400, message: '이미 신청한 과목입니다.' };
+    // 수강 학점이 9학점이 넘는 경우
+    if (total_point > 9)
+      return { status: 400, message: '이수 가능 학점을 초과했습니다.' };
+    // 신청 가능 시간인지 확인해주는 경우
+    if (app_period.start > now_date || app_period.end < now_date) {
+      return { status: 400, message: '신청 가능 기간이 아닙니다.' };
+    }
+    // 수강 인원을 넘긴 경우
+    if (count === course.maxPeople) {
+      return { status: 400, message: '수강 인원을 초과했습니다.' };
+    }
+  }
+
   async applyCourse(userId: string, courseId: string) {
     // 수강 신청입니다.
     try {
       const app_period: ApplyPeriod = this.periodService.getPeriod();
-      const now_date: Date = new Date();
-      console.log(app_period, now_date);
       const userarr = await this.userRepository.findCourseListByUser(userId);
       const user = userarr[0];
       if (!user) return { status: 403, message: 'user 정보가 틀렸습니다.' };
       else {
         const newCourse = await this.courseService.getCourseById(courseId);
-        let count = newCourse.point;
-        // 강의 수강 조건에 맞지 않는 경우
-        if (user.year < newCourse.year)
-          return { status: 400, message: '수강할 수 없는 학년입니다.' };
-        // 수강 목록에 이미 있는 경우
-        if (
-          user.course.filter((course) => {
-            count += course.point;
-            return course.courseId === courseId;
-          }).length
-        )
-          return { status: 400, message: '이미 신청한 과목입니다.' };
-        // 수강 학점이 9학점이 넘는 경우
-        if (count > 9)
-          return { status: 400, message: '이수 가능 학점을 초과했습니다.' };
-        // 신청 가능 시간인지 확인해주는 경우
-        if (app_period.start > now_date || app_period.end < now_date) {
-          return { status: 400, message: '신청 가능 기간이 아닙니다.' };
+        const people_count = await this.courseService.countCurrentPeople(
+          courseId,
+        );
+        // 수강신청 조건을 만족하는지 판단하는 변수
+        const condition_return_value: { status: number; message: string } =
+          this.conditionToApply(
+            newCourse,
+            user,
+            courseId,
+            people_count,
+            app_period,
+          );
+        // 조건을 만족하지 못하면 해당 조건의 status, message 반환
+        if (condition_return_value.status === 400) {
+          return condition_return_value;
         }
         // 모든 조건을 통과한다면 관계에 추가해준따.
-        await this.dataSource.manager.save(newCourse);
         user.course.push(newCourse);
         await this.dataSource.manager.save(user);
         // TODO:: courseid로 강좌 가져와서 유저 데이터에 합쳐서 객체 배열로 전달
@@ -90,7 +120,7 @@ export class UserService {
       }
     } catch (err) {
       // 서버 에러
-      return { status: 500 };
+      return { status: 500, message: '잘못된 입력입니다.' };
     }
   }
 }

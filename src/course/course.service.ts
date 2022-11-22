@@ -29,7 +29,6 @@ export class CourseService {
   public async returnCourse(course: Course): Promise<CourseReturn> {
     // 인원 구해주고, 프론트에서 사용할 데이터 양식으로 dto
     const currentPeople = await this.countCurrentPeople(course.courseId);
-    console.log(currentPeople);
     return {
       ...course,
       currentPeople,
@@ -42,7 +41,6 @@ export class CourseService {
     for (const course of courses) {
       result.push(await this.returnCourse(course));
     }
-    console.log(result);
     return result;
   }
 
