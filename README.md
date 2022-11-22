@@ -1,86 +1,71 @@
-# 1stCnSContest
+<p align="center">
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
+</p>
 
-https://traveling-organ-e7f.notion.site/2022-Cloud-Server-2eccf1fc81b94584898aae38615f56eb
+[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
+[circleci-url]: https://circleci.com/gh/nestjs/nest
 
-1st Cloud&amp;Server Contest Entry
+  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+    <p align="center">
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
+<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
+<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
+<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
+<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
+<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
+  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
+    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
+  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
+</p>
+  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
+  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-# 2022 Cloud & Server 프로그래밍 대회
+# DoNotRougly v1.0.0
 
-# 🎈 주제 : 모의 수강 신청 시스템
+## Installation
 
-<aside>
-💡 **간단한 모의 수강 신청 시스템을 만들어 주세요!
+```bash
+$ npm install
+```
 
--** 프론트엔드 구성은 **단순한 구현\*\*도 인정합니다.
+## Running the app
 
-- Git의 경우 단순히 결과물만 올리는 것이 아닌 **Branch** 를 만들고 **기능별 Commit** 을 해보는 등 협업을 경험해 보세요!
+```bash
+# development
+$ npm run start
 
-- 제출한 결과물에 대해 **부하 테스트**를 진행할 예정입니다.
-  (Ngrinder, K6, Locust 등 다양한 Tool 이 존재하니 한 번 사용해보세요!)
+# watch mode
+$ npm run start:dev
 
-- **Docker** 사용시 가산점이 존재합니다!
+# production mode
+$ npm run start:prod
+```
 
-- 배포 환경은 **AWS Free tier** 로 통일 (부하 테스트를 위하여)
+## Test
 
-- **모든 요구 사항을 구현할 필요는 없습니다!** 본인이 할 수 있는 부분만 구현하고 제출하셔도 됩니다. 특히 **부하 테스트**, **Docker** 같은 부분은 참가자 분들에게 구현이 어려울 수 있으니 해당 부분 보다는 **클라우드**를 사용한 배포, **데이터베이스**를 사용해보는 경험을 중점으로 대회를 진행하길 희망합니다 :)
+```bash
+# unit tests
+$ npm run test
 
-</aside>
+# e2e tests
+$ npm run test:e2e
 
-# ✔ 요구사항
+# test coverage
+$ npm run test:cov
+```
 
-1. **로그인 기능**
-   - 학번, 비밀번호를 통한 로그인
-2. **수강 신청 기능 - 각 학생이 수강 가능한 최대 학점은 9학점으로 설정합니다!**
-   - 수강 신청 페이지 접속 시 강의 목록 표시
-   - 강의 목록 필터링
-     - 학과별, 학년별, 교수별, 과목별, 과목번호 등으로 필터링 가능
-   - 수강 신청
-     - 강의 목록의 강의를 직접 클릭하여 신청 가능
-     - 과목번호 + 분반으로 신청 가능
-     - 학생 정보가 강의 수강 대상에 해당되지 않을 시 신청 불가능
-3. **신청 내역 조회 기능**
-   - 학생이 신청한 강의 목록 조회
-   - 수강 취소 가능
-4. **시스템 관리 기능**
-   - 수강 신청 가능 시간 설정
-   - 관리자 아이디로 접속 시 강의 목록 관리 가능
-   - 강의 데이터 수정 - Ex) 강의명 변경, 정원 변경 등
-   - 강의 삭제
-     - 강의 삭제 시 해당 강의 수강생들에게 이메일로 폐강 알림 전송
+## Support
 
-### 다양한 예외 처리를 고려하여 구현 바랍니다!
+Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
 
-### **각 팀의 진행 상황에 따라서 요구 사항이 추가될 수 있습니다!**
+## Stay in touch
 
----
+- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
+- Website - [https://nestjs.com](https://nestjs.com/)
+- Twitter - [@nestframework](https://twitter.com/nestframework)
 
-# 💾 데이터
+## License
 
-1. **학생 데이터**
-   - 이메일, 학번, 비밀번호, 이름, 학년, 현재 수강 학점
-2. **강의 데이터**
-   - 학과, 대상 학년, 학점, 과목명, 과목번호, 분반, 교수명, 정원, 현재 수강신청 인원
-3. **수강 신청 데이터**
-   - 과목번호, 분반, 수강 인원들
-4. **관리자 데이터**
-   - 이메일, 비밀번호
-
-→ _기본적인 데이터 구성은 위와 같습니다. 본인이 생각하기에 추가로 필요할 것 같은 사항들은 추가하여 구현하시면 됩니다!_
-
-→ _데이터베이스 구성에 어려움이 있다면 단순 로컬에 데이터를 저장하셔도 됩니다. 물론 총점은 차이가 있습니다._
-
----
-
-# ✉ 제출
-
-제출 전 **Github repository** 가 **public** 인지 **배포 주소**가 정확한 지 확인해주세요!
-
-제출한 코드에는 **주석**을 포함해주세요! _(라인마다 주석을 달며 설명할 필요는 없습니다.)_
-
-배포 주소의 경우 **인바운드** 규칙을 설정하여 **접근** 가능하게 설정 부탁드립니다.
-
-**시나리오 및 설명**은 각 기능에 대한 **캡처**와 **설명**등을 포함하여 제출해주세요.
-
-(**Docker** 사용 팀은 **Docker hub 링크**도 **시나리오 및 설명**에 같이 첨부해주세요!)
-
-### **제출 링크** : [https://forms.gle/hVuNgeFELTANJzXf9](https://forms.gle/hVuNgeFELTANJzXf9)
+Nest is [MIT licensed](LICENSE).
