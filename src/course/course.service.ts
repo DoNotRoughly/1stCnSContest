@@ -66,9 +66,11 @@ export class CourseService {
       return { status: 400, message: '오류가 발생했습니다.' };
     }
   }
+
   async sendEmail(user_list: User[]) {
     return user_list;
   }
+  
   async deleteCourse(courseId: string) {
     try {
       const course = await this.courseRepository.findUserListByCourse(courseId);
@@ -82,6 +84,7 @@ export class CourseService {
     } catch (e) {
       return { status: 400, message: '오류가 발생했습니다.' };
     }
+
   }
 
   // 필터링 하여 강의 목록 반환
