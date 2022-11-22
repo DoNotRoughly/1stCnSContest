@@ -92,7 +92,6 @@ export class CourseService {
     try {
       // const course = await this.courseRepository.findUserListByCourse(courseId);
       // await this.sendEmail(course[0].user);
-
       const isDeleted = await this.courseRepository.delete(courseId);
       if (!isDeleted.affected) {
         return { status: 400, message: '삭제할 수 없는 강의입니다.' };
