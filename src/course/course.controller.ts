@@ -29,10 +29,6 @@ export class CourseController {
     if (result === null) {
       return res.status(403);
     }
-<<<<<<< HEAD
     return res.status(201).json(result);
-=======
-    return res.status(201).json(this.courseService.returnCourseList(result));
->>>>>>> develop
   }
 }
