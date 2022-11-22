@@ -18,8 +18,9 @@ export class UserService {
   async loginInfo(userId: string, pw: string) {
     // 로그인입니다.
     try {
-      const result = await this.userRepository.findCourseListByUser(userId);
-      if (result[0].pw === pw) return { ...result[0], status: 201 };
+      const rep_result = await this.userRepository.findCourseListByUser(userId);
+      const result = rep_result[0];
+      if (result.pw === pw) return { ...result, status: 201 };
       else return { status: 400 };
     } catch (err) {
       // 서버 에러
