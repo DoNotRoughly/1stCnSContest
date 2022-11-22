@@ -1,14 +1,10 @@
-import e from 'express';
 import { Course } from 'src/course/course.entity';
 import {
   Column,
   Entity,
   PrimaryColumn,
   BaseEntity,
-  OneToMany,
-  PrimaryGeneratedColumn,
   ManyToMany,
-  JoinColumn,
   JoinTable,
 } from 'typeorm';
 

@@ -1,6 +1,5 @@
-import { Controller, Get, Param, Patch, Post, Req, Res } from '@nestjs/common';
+import { Controller, Get, Patch, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { Course } from './course.entity';
 import { CourseReturn } from './course.returns';
 import { CourseService } from './course.service';
 
