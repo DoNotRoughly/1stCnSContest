@@ -25,5 +25,5 @@ export class Course extends BaseEntity {
   maxPeople: number; // 총원
 
   @ManyToMany(() => User, (user) => user.course)
-  user: User; // 현재 신청 인원의 학번들, 리스트를 stringfy 해서 저장
+  user: User[]; // 현재 신청 인원의 학번들, 리스트를 stringfy 해서 저장
 }

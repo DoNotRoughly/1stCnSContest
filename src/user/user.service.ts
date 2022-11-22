@@ -81,7 +81,8 @@ export class UserService {
         if (app_period.start > now_date || app_period.end < now_date) {
           return { status: 400, message: '신청 가능 기간이 아닙니다.' };
         }
-        // 모든 조건을 통과한다면 course 목록에 추가해준따.
+        // 모든 조건을 통과한다면 관계에 추가해준따.
+        await this.dataSource.manager.save(newCourse);
         user.course.push(newCourse);
         await this.dataSource.manager.save(user);
         // TODO:: courseid로 강좌 가져와서 유저 데이터에 합쳐서 객체 배열로 전달

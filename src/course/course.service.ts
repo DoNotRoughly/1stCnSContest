@@ -11,6 +11,7 @@ export class CourseService {
   resentvalue: string;
 
   constructor(
+    //생성자
     @InjectRepository(CourseRepository)
     private readonly courseRepository: CourseRepository,
   ) {
@@ -18,22 +19,30 @@ export class CourseService {
     this.resentvalue = '';
   }
 
-  static returnCourse(course: Course): CourseReturn {
+  public async countCurrentPeople(courseId: string): Promise<number> {
+    // 현재 강의의 수강 인원 수 반환
+    const course = await this.courseRepository.findUserListByCourse(courseId);
+    const result = course[0].user;
+    return result.length;
+  }
+
+  public async returnCourse(course: Course): Promise<CourseReturn> {
+    // 인원 구해주고, 프론트에서 사용할 데이터 양식으로 dto
+    const currentPeople = await this.countCurrentPeople(course.courseId);
+    console.log(currentPeople);
     return {
-      courseId: course.courseId,
-      name: course.name,
-      point: course.point,
-      major: course.major,
-      year: course.year,
-      professor: course.professor,
-      maxPeople: course.maxPeople,
-      currentPeople: 0, //JSON.parse(course.studentIds).length,
+      ...course,
+      currentPeople,
     };
   }
 
-  static returnCourseList(courses: Course[]): CourseReturn[] {
-    const result: CourseReturn[] = [];
-    courses.map((course) => result.push(CourseService.returnCourse(course)));
+  public async returnCourseList(courses: Course[]) {
+    // 바뀐 데이터 양식의 배열로 반환
+    const result = [];
+    for (const course of courses) {
+      result.push(await this.returnCourse(course));
+    }
+    console.log(result);
     return result;
   }
 
@@ -42,12 +51,6 @@ export class CourseService {
     return await this.courseRepository.findOneBy({ courseId: courseId });
   }
 
-  public async getCourseListId(courseList: Course[]) {
-    const result = courseList.map(async (course) => {
-      await this.getCourseById(course.courseId);
-    });
-    return result;
-  }
   // 필터링 하여 강의 목록 반환
   async filter(label: string, value: string) {
     if (value === '') {
