@@ -105,6 +105,26 @@ input:
 output: CourseReturn[]
 ```
 
+#### @Put(/)
+
+```Json
+input:
+{
+  "course":Course
+}
+output: CourseReturn[]
+```
+
+#### @Delete(/)
+
+```Json
+input:
+{
+  "courseId":string,
+}
+output: CourseReturn[]
+```
+
 ## CASE: /period
 
 #### @Get(/)
