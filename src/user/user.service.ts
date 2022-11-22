@@ -31,7 +31,7 @@ export class UserService {
   }
 
   async cancelCourse(userId: string, courseId: string) {
-    // 수강 취소입니다.
+    // 수강 취소입니다. 두 개체간의 연결을 끊습니다.
     try {
       const userarr = await this.userRepository.findCourseListByUser(userId);
       const user = userarr[0];

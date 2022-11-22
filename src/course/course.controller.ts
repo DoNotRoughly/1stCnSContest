@@ -1,4 +1,4 @@
-import { Controller, Get, Patch, Req, Res } from '@nestjs/common';
+import { Controller, Delete, Get, Patch, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { CourseReturn } from './course.returns';
 import { CourseService } from './course.service';
@@ -24,10 +24,14 @@ export class CourseController {
   @Patch('modify')
   async modify(@Req() req: Request, @Res() res: Response) {
     const data: CourseReturn = JSON.parse(Object(req.body.params.data));
-    const result = await this.courseService.modify(data);
+    const courses = await this.courseService.modify(data);
+    const result = await this.courseService.returnCourseList(courses);
     if (result === null) {
       return res.status(403);
     }
-    return res.status(201).json(this.courseService.returnCourseList(result));
+    return res.status(201).json(result);
   }
+
+  @Delete('')
+  async deleteCourse(@Req() req: Request, @Res() res: Response) {}
 }
