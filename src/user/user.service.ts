@@ -14,8 +14,8 @@ export class UserService {
     @InjectRepository(UserRepository)
     private userRepository: UserRepository,
     private courseService: CourseService,
-    private dataSource: DataSource,
     private periodService: PeriodService,
+    private dataSource: DataSource,
   ) {}
   async loginInfo(userId: string, pw: string) {
     // 로그인입니다.
@@ -63,6 +63,10 @@ export class UserService {
   ) {
     let total_point: number = course.point;
     const now_date: Date = new Date();
+    // 신청 가능 시간인지 확인해주는 경우
+    if (app_period.start > now_date || app_period.end < now_date) {
+      return { status: 400, message: '신청 가능 기간이 아닙니다.' };
+    }
     // 강의 수강 조건에 맞지 않는 경우
     if (user.year < course.year)
       return { status: 400, message: '수강할 수 없는 학년입니다.' };
@@ -77,10 +81,6 @@ export class UserService {
     // 수강 학점이 9학점이 넘는 경우
     if (total_point > 9)
       return { status: 400, message: '이수 가능 학점을 초과했습니다.' };
-    // 신청 가능 시간인지 확인해주는 경우
-    if (app_period.start > now_date || app_period.end < now_date) {
-      return { status: 400, message: '신청 가능 기간이 아닙니다.' };
-    }
     // 수강 인원을 넘긴 경우
     if (count === course.maxPeople) {
       return { status: 400, message: '수강 인원을 초과했습니다.' };

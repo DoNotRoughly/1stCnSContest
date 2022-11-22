@@ -45,7 +45,4 @@ export class CourseController {
     const result = await this.courseService.deleteCourse(courseId);
     return res.status(result.status).json(result);
   }
-
-  @Delete('')
-  async deleteCourse(@Req() req: Request, @Res() res: Response) {}
 }
