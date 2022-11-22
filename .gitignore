@@ -36,4 +36,3 @@ lerna-debug.log*
 *.lock
 /src/configs
 *-lock.json
-.env.*
