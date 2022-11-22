@@ -9,6 +9,9 @@ import { UserService } from 'src/user/user.service';
 import { PeriodModule } from 'src/period/period.module';
 import { PeriodService } from 'src/period/period.service';
 import { UserModule } from 'src/user/user.module';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+
 
 @Module({
   imports: [
@@ -19,6 +22,24 @@ import { UserModule } from 'src/user/user.module';
       UserModule,
       PeriodModule,
     ]),
+    MailerModule.forRoot({
+      transport: {
+        service: 'google',
+        host: 'smtp.gmail.com',
+        port: 587,
+        auth: {
+          user: 'id@gmail.com', // 네이버 아이디
+          pass: 'secrekey', // 네이버 비밀번호
+        },
+      },
+      template: {
+        dir: process.cwd() + '/template/',
+        adapter: new HandlebarsAdapter(), // or new PugAdapter()
+        options: {
+          strict: true,
+        },
+      },
+    }),
   ],
   controllers: [CourseController],
   providers: [CourseService, UserService, PeriodService],
