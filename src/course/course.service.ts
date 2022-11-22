@@ -90,7 +90,7 @@ export class CourseService {
   async deleteCourse(courseId: string) {
     // 삭제
     try {
-      const course = await this.courseRepository.findUserListByCourse(courseId);
+      // const course = await this.courseRepository.findUserListByCourse(courseId);
       // await this.sendEmail(course[0].user);
 
       const isDeleted = await this.courseRepository.delete(courseId);
