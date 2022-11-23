@@ -22,7 +22,9 @@ export class UserService {
     try {
       const rep_result = await this.userRepository.findCourseListByUser(userId);
       const result = rep_result[0];
-      if (result.pw === pw) return { ...result, status: 201 };
+      const save_pw = result.pw;
+      delete result.pw;
+      if (save_pw === pw) return { result, status: 201 };
       else return { status: 400 };
     } catch (err) {
       // 서버 에러
@@ -35,6 +37,7 @@ export class UserService {
     try {
       const userarr = await this.userRepository.findCourseListByUser(userId);
       const user = userarr[0];
+      delete user.pw;
       if (!user) return { status: 403, message: 'user 정보가 틀렸습니다.' };
       else {
         const tempCourseList = user.course.filter((course) => {
@@ -45,7 +48,7 @@ export class UserService {
         else {
           user.course = tempCourseList;
           await this.dataSource.manager.save(user);
-          return { ...user, status: 202 };
+          return { user, status: 202 };
         }
       }
     } catch (err) {
@@ -85,6 +88,7 @@ export class UserService {
     if (count === course.maxPeople) {
       return { status: 400, message: '수강 인원을 초과했습니다.' };
     }
+    return { status: 200, message: '' };
   }
 
   async applyCourse(userId: string, courseId: string) {
@@ -93,6 +97,7 @@ export class UserService {
       const app_period: ApplyPeriod = this.periodService.getPeriod();
       const userarr = await this.userRepository.findCourseListByUser(userId);
       const user = userarr[0];
+      delete user.pw;
       if (!user) return { status: 403, message: 'user 정보가 틀렸습니다.' };
       else {
         const newCourse = await this.courseService.getCourseById(courseId);
@@ -116,7 +121,7 @@ export class UserService {
         user.course.push(newCourse);
         await this.dataSource.manager.save(user);
         // TODO:: courseid로 강좌 가져와서 유저 데이터에 합쳐서 객체 배열로 전달
-        return { ...user, status: 201 };
+        return { user, status: 201 };
       }
     } catch (err) {
       // 서버 에러
