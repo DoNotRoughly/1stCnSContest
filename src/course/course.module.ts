@@ -19,7 +19,6 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
       CourseRepository,
       UserRepository,
       UserModule,
-      PeriodModule,
     ]),
     MailerModule.forRoot({
       transport: {
@@ -28,7 +27,7 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
         port: 587,
         auth: {
           user: 'id@gmail.com', // 네이버 아이디
-          pass: 'secrekey', // 네이버 비밀번호
+          pass: 'secret_key', // 네이버 비밀번호
         },
       },
       template: {
