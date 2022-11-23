@@ -28,12 +28,14 @@ export class CourseService {
     return result.length;
   }
 
-  public async returnCourse(course: Course): Promise<CourseReturn> {
+  public async returnCourse(course: Course) {
     // 인원 구해주고, 프론트에서 사용할 데이터 양식으로 dto
     const currentPeople = await this.countCurrentPeople(course.courseId);
     return {
-      ...course,
-      currentPeople,
+      course: {
+        ...course,
+        currentPeople,
+      },
     };
   }
 
