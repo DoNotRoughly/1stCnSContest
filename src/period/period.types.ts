@@ -1,4 +1,4 @@
 export interface ApplyPeriod {
-  start: Date;
-  end: Date;
+  start: string;
+  end: string;
 }

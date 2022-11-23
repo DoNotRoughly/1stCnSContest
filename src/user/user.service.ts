@@ -14,7 +14,6 @@ export class UserService {
     @InjectRepository(UserRepository)
     private userRepository: UserRepository,
     private courseService: CourseService,
-    private periodService: PeriodService,
     private dataSource: DataSource,
   ) {}
   async loginInfo(userId: string, pw: string) {
@@ -84,7 +83,12 @@ export class UserService {
     let total_point: number = course.point;
     const now_date: Date = new Date();
     // 신청 가능 시간인지 확인해주는 경우
-    if (!(app_period.start < now_date && app_period.end > now_date)) {
+    if (
+      !(
+        app_period.start < now_date.toISOString() &&
+        app_period.end > now_date.toISOString()
+      )
+    ) {
       return { status: 400, message: '신청 가능 기간이 아닙니다.' };
     }
     // 강의 수강 조건에 맞지 않는 경우
@@ -111,7 +115,7 @@ export class UserService {
   async applyCourse(userId: string, courseId: string) {
     // 수강 신청입니다.
     try {
-      const app_period: ApplyPeriod = this.periodService.getPeriod();
+      const app_period: ApplyPeriod = PeriodService.period;
       const now_date: Date = new Date();
       console.log(app_period, now_date);
       const userarr = await this.userRepository.findCourseListByUser(userId);

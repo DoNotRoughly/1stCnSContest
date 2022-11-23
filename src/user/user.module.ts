@@ -9,13 +9,9 @@ import { PeriodService } from 'src/period/period.service';
 
 @Module({
   imports: [
-    TypeOrmExModule.forCustomRepository([
-      UserRepository,
-      CourseRepository,
-      PeriodService,
-    ]),
+    TypeOrmExModule.forCustomRepository([UserRepository, CourseRepository]),
   ],
   controllers: [UserController],
-  providers: [UserService, CourseService, PeriodService],
+  providers: [UserService, CourseService],
 })
 export class UserModule {}
