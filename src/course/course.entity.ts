@@ -3,7 +3,7 @@ import { Column, Entity, BaseEntity, PrimaryColumn, ManyToMany } from 'typeorm';
 
 @Entity()
 export class Course extends BaseEntity {
-  @PrimaryColumn('uuid')
+  @PrimaryColumn()
   courseId: string;
 
   @Column()
@@ -24,6 +24,6 @@ export class Course extends BaseEntity {
   @Column()
   maxPeople: number; // 총원
 
-  @ManyToMany(() => User, (user) => user.userId)
-  user: User; // 현재 신청 인원의 학번들, 리스트를 stringfy 해서 저장
+  @ManyToMany(() => User, (user) => user.course)
+  user: User[]; // 현재 신청 인원의 학번들, 리스트를 stringfy 해서 저장
 }
