@@ -22,8 +22,18 @@ export class UserService {
     try {
       const rep_result = await this.userRepository.findCourseListByUser(userId);
       const result = rep_result[0];
-      if (result.pw === pw) return { ...result, status: 201 };
-      else return { status: 400 };
+      if (result.pw === pw) {
+        const course_return = await this.courseService.returnCourseList(
+          result.course,
+        );
+        return {
+          user: {
+            ...result,
+            course: course_return,
+          },
+          status: 201,
+        };
+      } else return { status: 400 };
     } catch (err) {
       // 서버 에러
       return { status: 500 };
@@ -44,8 +54,18 @@ export class UserService {
           return { status: 400, message: '삭제되지 않았습니다.' };
         else {
           user.course = tempCourseList;
+          const course_return = await this.courseService.returnCourseList(
+            user.course,
+          );
+
           await this.dataSource.manager.save(user);
-          return { ...user, status: 202 };
+          return {
+            user: {
+              ...user,
+              course: course_return,
+            },
+            status: 202,
+          };
         }
       }
     } catch (err) {
@@ -64,7 +84,7 @@ export class UserService {
     let total_point: number = course.point;
     const now_date: Date = new Date();
     // 신청 가능 시간인지 확인해주는 경우
-    if (app_period.start > now_date || app_period.end < now_date) {
+    if (!(app_period.start < now_date && app_period.end > now_date)) {
       return { status: 400, message: '신청 가능 기간이 아닙니다.' };
     }
     // 강의 수강 조건에 맞지 않는 경우
@@ -85,12 +105,15 @@ export class UserService {
     if (count === course.maxPeople) {
       return { status: 400, message: '수강 인원을 초과했습니다.' };
     }
+    return { status: 200, message: '성공!' };
   }
 
   async applyCourse(userId: string, courseId: string) {
     // 수강 신청입니다.
     try {
       const app_period: ApplyPeriod = this.periodService.getPeriod();
+      const now_date: Date = new Date();
+      console.log(app_period, now_date);
       const userarr = await this.userRepository.findCourseListByUser(userId);
       const user = userarr[0];
       if (!user) return { status: 403, message: 'user 정보가 틀렸습니다.' };
@@ -115,12 +138,20 @@ export class UserService {
         // 모든 조건을 통과한다면 관계에 추가해준따.
         user.course.push(newCourse);
         await this.dataSource.manager.save(user);
+        const course_return = await this.courseService.returnCourseList(
+          user.course,
+        );
         // TODO:: courseid로 강좌 가져와서 유저 데이터에 합쳐서 객체 배열로 전달
-        return { ...user, status: 201 };
+        return {
+          user: {
+            ...user,
+            course: course_return,
+          },
+          status: 201,
+        };
       }
     } catch (err) {
-      // 서버 에러
-      return { status: 500, message: '잘못된 입력입니다.' };
+      return { status: 500 };
     }
   }
 }
