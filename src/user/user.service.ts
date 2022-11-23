@@ -84,7 +84,7 @@ export class UserService {
     let total_point: number = course.point;
     const now_date: Date = new Date();
     // 신청 가능 시간인지 확인해주는 경우
-    if (app_period.start > now_date || app_period.end < now_date) {
+    if (!(app_period.start < now_date && app_period.end > now_date)) {
       return { status: 400, message: '신청 가능 기간이 아닙니다.' };
     }
     // 강의 수강 조건에 맞지 않는 경우
@@ -112,6 +112,8 @@ export class UserService {
     // 수강 신청입니다.
     try {
       const app_period: ApplyPeriod = this.periodService.getPeriod();
+      const now_date: Date = new Date();
+      console.log(app_period, now_date);
       const userarr = await this.userRepository.findCourseListByUser(userId);
       const user = userarr[0];
       if (!user) return { status: 403, message: 'user 정보가 틀렸습니다.' };
