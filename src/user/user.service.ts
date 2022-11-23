@@ -47,8 +47,18 @@ export class UserService {
           return { status: 400, message: '삭제되지 않았습니다.' };
         else {
           user.course = tempCourseList;
+          const course_return = this.courseService.returnCourseList(
+            user.course,
+          );
+
           await this.dataSource.manager.save(user);
-          return { user, status: 202 };
+          return {
+            user: {
+              ...user,
+              course: course_return,
+            },
+            status: 202,
+          };
         }
       }
     } catch (err) {
@@ -119,9 +129,16 @@ export class UserService {
         }
         // 모든 조건을 통과한다면 관계에 추가해준따.
         user.course.push(newCourse);
+        const course_return = this.courseService.returnCourseList(user.course);
         await this.dataSource.manager.save(user);
         // TODO:: courseid로 강좌 가져와서 유저 데이터에 합쳐서 객체 배열로 전달
-        return { user, status: 201 };
+        return {
+          user: {
+            ...user,
+            course: course_return,
+          },
+          status: 201,
+        };
       }
     } catch (err) {
       // 서버 에러
